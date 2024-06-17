@@ -1,6 +1,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#085a9d">
-<link rel="icon" type="image/svg" href="images/moz.svg">
+<link rel="icon" type="image/png" href="images/coat.png">
 <link rel="stylesheet" type="text/css" href="../resources/w3css/w3.css">
 <link rel="stylesheet" type="text/css" href="../resources/w3css/tailwind.css">
 <link href="../resources/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
