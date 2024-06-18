@@ -386,6 +386,98 @@ function Subjects(){
     )
 }
 
+function Students(){
+    const [rows,setRows] = useState([]);
+    const [active,setActive] = useState({});
+    const [open,setOpen] = useState({
+        add:false,
+        edit:false
+    });
+
+    const getRows = () => {
+        $.get("api/", {getStudents:"true"}, res=>setRows(res));
+    }
+
+    const saveLanguage = (event) => {
+        event.preventDefault();
+
+        $.post("api/", $(event.target).serialize(), response=>{
+            try{
+                let res = JSON.parse(response);
+
+                if(res.status){
+                    Toast("Success");
+                    getRows();
+                    setOpen({...open, add:false});
+                }
+                else{
+                    Toast(res.message);
+                }
+            }
+            catch(E){
+                alert(E.toString()+response);
+            }
+        });
+    }
+
+    useEffect(()=>{
+        getRows();
+    }, []);
+
+    return (
+        <>
+            <Box sx={{p:2}}>
+                <Button variant="contained" sx={{textTransform:"none"}} onClick={e=>setOpen({...open, add:true})}>Add Student</Button>
+            </Box>
+            <Paper sx={{m:2}}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>#</TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Phone</TableCell>
+                            <TableCell>Email</TableCell>
+                            <TableCell>Reg</TableCell>
+                            <TableCell>Status</TableCell>
+                            <TableCell>Action</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map((row,index)=>(
+                            <TableRow hover>
+                                <TableCell padding="none" sx={{pl:2}}>{index+1}</TableCell>
+                                <TableCell padding="none">{row.name}</TableCell>
+                                <TableCell padding="none">{row.phone}</TableCell>
+                                <TableCell padding="none">{row.email}</TableCell>
+                                <TableCell padding="none">{row.reg}</TableCell>
+                                <TableCell padding="none">{row.status}</TableCell>
+                                <TableCell sx={{padding:"7px"}}>
+                                    <Button variant="contained" size="small">Edit</Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </Paper>
+
+            <Dialog open={open.add} onClose={()=>setOpen({...open, add:false})}>
+                <div className="w3-padding-large" style={{width:"400px"}}>
+                    <CloseHeading label="Add Student" onClose={()=>setOpen({...open, add:false})}/>
+                    <form onSubmit={saveLanguage}>
+                        <TextField label="Student Name" fullWidth size="small" name="new_student_name" sx={{mt:2}} />
+                        <TextField label="Reg No." fullWidth size="small" name="reg" sx={{mt:2}} />
+                        <TextField label="Phone" fullWidth size="small" name="phone" sx={{mt:2}} />
+                        <TextField label="Email" fullWidth size="small" name="email" sx={{mt:2,mb:3}} />
+                        
+                        <Button variant="contained" type="submit">Submit</Button>
+                    </form>
+                    <BottomClose onClose={()=>setOpen({...open, add:false})}/>
+                </div>
+            </Dialog>
+        </>
+    )
+}
+
 function Profile(props){
     const [value, setValue] = React.useState(0);
     const [picture, setPicture] = React.useState(user.photo);

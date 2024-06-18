@@ -17,9 +17,33 @@ if (isset($_GET['getSubjects'])) {
 	header('Content-Type: application/json; charset=utf-8');
 	echo json_encode($rows);
 }
+elseif (isset($_GET['getStudents'])) {
+	$rows = [];
+
+	$read = $db->query("SELECT * FROM students");
+	while ($row = $read->fetch_assoc()) {
+		array_push($rows, $row);
+	}
+
+	header('Content-Type: application/json; charset=utf-8');
+	echo json_encode($rows);
+}
 elseif(isset($_POST['new_subject_name'])){
 	db_insert("subjects", [
 		'name' => $_POST['new_subject_name']
+	]);
+
+	echo json_encode(['status' => true, 'message' => "Success"]);
+}
+elseif(isset($_POST['new_student_name'], $_POST['reg'], $_POST['phone'], $_POST['email'])){
+	db_insert("students", [
+		'name' => $_POST['new_student_name'],
+		'phone' => $_POST['phone'],
+		'email' => $_POST['email'],
+		'reg' => $_POST['reg'],
+		'school' => 1,
+		'password' => md5("1234"),
+		'status' => 'active',
 	]);
 
 	echo json_encode(['status' => true, 'message' => "Success"]);
