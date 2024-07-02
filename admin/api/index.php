@@ -17,6 +17,21 @@ if (isset($_GET['getSubjects'])) {
 	header('Content-Type: application/json; charset=utf-8');
 	echo json_encode($rows);
 }
+elseif (isset($_POST['login_email'], $_POST['password'])) {
+	$data = getData("admins", ['email' => $_POST['login_email'], 'password' => md5($_POST['password'])]);
+
+	if ($data != null) {
+		$_SESSION['user_id'] = $data['id'];
+		$_SESSION['data'] = $data;
+
+		$data['status'] = true;
+
+		echo json_encode($data);
+	}
+	else{
+		echo json_encode(['status' => false, 'message' => "Login failed"]);
+	}
+}
 elseif (isset($_GET['getStudents'])) {
 	$rows = [];
 
@@ -90,4 +105,7 @@ elseif (isset($_GET['getBooks'])) {
 
 	header('Content-Type: application/json; charset=utf-8');
 	echo json_encode($rows);
+}
+else{
+	echo "no data - ".json_encode($_POST);
 }

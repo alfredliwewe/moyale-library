@@ -1,6 +1,6 @@
 <?php 
 //session_start();
-$db = new mysqli("localhost", "root", "", "library");
+$db = new mysqli("localhost", "root", "", "library1");
 
 $config = [];
 
