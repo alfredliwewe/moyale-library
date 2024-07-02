@@ -116,7 +116,7 @@ function Index(){
 
                     <div className="px-2">
                         {menus.map((row,index)=>(
-                            <Button variant={row.title == stage ? "contained":"outlined"} sx={{mb:1}} fullWidth>{row.title}</Button>
+                            <Button variant={row.title == stage ? "contained":"outlined"} onClick={e=>setStage(row.title)} sx={{mb:1}} fullWidth>{row.title}</Button>
                         ))}
                     </div>
                 </div>
